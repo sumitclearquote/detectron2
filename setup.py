@@ -170,7 +170,7 @@ setup(
         #"termcolor>=1.1",
         #"yacs>=0.1.8",
         #"tabulate",
-        #"cloudpickle",
+        "cloudpickle",
         #"tqdm>4.29.0",
         #"tensorboard",
         # Lock version of fvcore/iopath because they may have breaking changes
@@ -181,11 +181,11 @@ setup(
         #"future",  # used by caffe2
         #"pydot",  # used to save caffe2 SVGs
         #"dataclasses; python_version<'3.7'",
-        #"omegaconf>=2.1",
+        "omegaconf>=2.1",
         #"hydra-core>=1.1",
         #"black==22.3.0",
         #"timm",
-        #"fairscale",
+        "fairscale",
         #"packaging",
         # If a new dependency is required at import time (in addition to runtime), it
         # probably needs to exist in docs/requirements.txt, or as a mock in docs/conf.py
