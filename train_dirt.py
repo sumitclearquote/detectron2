@@ -139,7 +139,7 @@ def main():
 	trainer = Trainer(cfg)
 	
 	# "True" to resume training from previous step else False for fresh training
-	trainer.resume_or_load(resume = False)
+	trainer.resume_or_load(resume = True)
 	
 	print("Training Started...", flush=True)
 	trainer.train()
