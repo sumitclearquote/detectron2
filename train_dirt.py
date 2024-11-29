@@ -105,7 +105,7 @@ def setup():
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
-	#cfg.MODEL.WEIGHTS = 'msil_training_dir/exp1/model_final.pth'
+	cfg.MODEL.WEIGHTS = 'R-101.pkl'
 	#Let training initialize from pre-trained
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
