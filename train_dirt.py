@@ -117,12 +117,12 @@ def setup():
 	# cfg.INPUT.MIN_SIZE_TEST = 512
 	# cfg.INPUT.MAX_SIZE_TEST = 800
 	cfg.SOLVER.BASE_LR = 0.00125
-	cfg.SOLVER.CHECKPOINT_PERIOD = 20000 # =========================== Change this
+	cfg.SOLVER.CHECKPOINT_PERIOD = 540#2700 # =========================== Change this
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
-	cfg.SOLVER.IMS_PER_BATCH = 2 # =========================== Change this
-	cfg.SOLVER.MAX_ITER = 200000 #===================================== 50 epochs=27000 for 50 epochs with 16 Batch size
-	cfg.SOLVER.WARMUP_ITERS = 2000
-	cfg.TEST.EVAL_PERIOD = 20000 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
+	cfg.SOLVER.IMS_PER_BATCH = 16 # =========================== Change this
+	cfg.SOLVER.MAX_ITER = 540#27000 #===================================== 50 epochs=27000 for 50 epochs with 16 Batch size
+	cfg.SOLVER.WARMUP_ITERS = 10 #2700
+	cfg.TEST.EVAL_PERIOD = 540 #2700 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
 
 	cfg.OUTPUT_DIR = exp_dir #./mahindra_dirt/exp1
 
