@@ -88,8 +88,7 @@ print("Dataset Registering....")
 #     dataset_dicts = DatasetCatalog.get(f"dirt_{d}")
 
 for d in ["val", "train"]:
-    imgdir = f"datasets/project_mahindra_dirt/{d}"
-    DatasetCatalog.register("dirt_" + d, lambda d=d:get_dataset_dicts(imgdir))
+    DatasetCatalog.register("dirt_" + d, lambda d=d:get_dataset_dicts(f"datasets/project_mahindra_dirt/{d}"))
     metadata = MetadataCatalog.get("dirt_" + d).set(thing_classes=class_list)
 
 
