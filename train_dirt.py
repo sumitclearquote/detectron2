@@ -104,7 +104,7 @@ def setup():
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
-	cfg.MODEL.WEIGHTS = 'R-101.pkl'
+	cfg.MODEL.WEIGHTS = 'model_final_a3ec72.pkl'
 	#Let training initialize from pre-trained
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
@@ -139,7 +139,7 @@ def main():
 	trainer = Trainer(cfg)
 	
 	# "True" to resume training from previous step else False for fresh training
-	trainer.resume_or_load(resume=False)
+	trainer.resume_or_load(resume = False)
 	
 	print("Training Started...", flush=True)
 	trainer.train()
