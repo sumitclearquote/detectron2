@@ -13,7 +13,7 @@ from detectron2.data.datasets import register_coco_instances
 from PIL import Image
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-from shapely.geometry import Polygon
+
 
 # import PointRend project
 # from detectron2.projects import point_rend
