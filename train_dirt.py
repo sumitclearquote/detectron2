@@ -21,7 +21,7 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 #for lr_scheduler
 from fvcore.common.param_scheduler import CosineParamScheduler
-from detectron2.solver.lr_scheduler import LRMultiplier, WarmupParamSchedule
+from detectron2.solver.lr_scheduler import LRMultiplier, WarmupParamScheduler
 from detectron2.solver import build_lr_scheduler
 
 #eval hook
