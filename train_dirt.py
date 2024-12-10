@@ -133,7 +133,7 @@ def setup():
 	cfg.SOLVER.BASE_LR = 0.0000125 # divide 0.00125(default) by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
 	cfg.SOLVER.CHECKPOINT_PERIOD = 2000 # =========================== 
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
-	cfg.SOLVER.IMS_PER_BATCH = 4 # =========================== 5 epochs
+	cfg.SOLVER.IMS_PER_BATCH = 2 # =========================== 5 epochs
 	cfg.SOLVER.MAX_ITER = 16000 #===================================== 50 epochs=27000 iters with 16 Batch size. 16000 iters = ~15 epoch
 	cfg.SOLVER.WARMUP_ITERS = 500
 	cfg.TEST.EVAL_PERIOD = 2000 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
