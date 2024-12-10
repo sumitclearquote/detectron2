@@ -36,7 +36,7 @@ NUM_GPUS = 1
 #label_map = {"dirt":0,"fake_lp_ioi":1,'real_lp_no_hsrp':2,'real_lp':2,'hsrp':3}
 
 class_list = ['dirt']
-exp_dir = './mahindra_dirt/exp1'
+exp_dir = './mahindra_dirt/exp2'
 
 
 
@@ -118,12 +118,12 @@ def setup():
 	cfg.SOLVER.BASE_LR = 0.00125
 	cfg.SOLVER.CHECKPOINT_PERIOD = 2700 # =========================== 
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
-	cfg.SOLVER.IMS_PER_BATCH = 16 # =========================== 5 epochs
-	cfg.SOLVER.MAX_ITER = 27000 #===================================== 50 epochs=27000 iters with 16 Batch size
+	cfg.SOLVER.IMS_PER_BATCH = 8 # =========================== 5 epochs
+	cfg.SOLVER.MAX_ITER = 54000 #===================================== 50 epochs=27000 iters with 16 Batch size
 	cfg.SOLVER.WARMUP_ITERS = 2700
 	cfg.TEST.EVAL_PERIOD = 2700 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
 
-	cfg.OUTPUT_DIR = exp_dir #./mahindra_dirt/exp1
+	cfg.OUTPUT_DIR = exp_dir #./mahindra_dirt/exp2
 
 	os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
 	print(cfg, flush=True)
