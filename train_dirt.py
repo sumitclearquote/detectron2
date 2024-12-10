@@ -73,6 +73,13 @@ class Trainer(DefaultTrainer):
 			cfg.SOLVER.WARMUP_METHOD,
 			)
 			return LRMultiplier(optimizer, multiplier=sched, max_iter=cfg.SOLVER.MAX_ITER)
+		
+	@classmethod
+	def build_train_loader(cls, cfg): # For augmentations
+		return build_detection_train_loader(
+			cfg,
+			mapper=DatasetMapper(cfg, is_train=True, augmentations=[random_apply_augmentations])
+		)
 
 	def build_hooks(self):
 		hooks = super().build_hooks()
@@ -145,17 +152,17 @@ def main():
 
 
 	# Custom trainer for adding augmentations
-	class AugTrainer(DefaultTrainer):
-		@classmethod
-		def build_train_loader(cls, cfg):
-			return build_detection_train_loader(
-				cfg,
-				mapper=DatasetMapper(cfg, is_train=True, augmentations=[random_apply_augmentations])
-			)
+	# class AugTrainer(DefaultTrainer):
+	# 	@classmethod
+	# 	def build_train_loader(cls, cfg):
+	# 		return build_detection_train_loader(
+	# 			cfg,
+	# 			mapper=DatasetMapper(cfg, is_train=True, augmentations=[random_apply_augmentations])
+	# 		)
 
 
-	#trainer = Trainer(cfg)
-	trainer = AugTrainer(cfg)
+	trainer = Trainer(cfg)
+	#trainer = AugTrainer(cfg)
 	
 	# "True" to resume training from previous step else False for fresh training
 	trainer.resume_or_load(resume = True)
