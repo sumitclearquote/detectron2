@@ -1,6 +1,7 @@
 import shutil
 import time
 import os
+import torch
 import pickle
 from detectron2 import model_zoo
 from detectron2.config import get_cfg
@@ -106,6 +107,7 @@ for d in ["val", "train"]:
 
 # adjusting the training configurations
 def setup():
+	torch.cuda.empty_cache()
 	cfg = get_cfg()
 	cfg.merge_from_file("configs/COCO-InstanceSegmentation/mask_rcnn_R_101_FPN_3x.yaml") # ======== architecture?
 	cfg.DATASETS.TRAIN = ("dirt_train",)
