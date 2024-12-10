@@ -36,6 +36,6 @@ augmentations = [
     T.RandomFlip(horizontal=True),
 ]
 
-random_apply_augmentations = T.RandomApply(augmentations, p = 0.5)
+random_apply_augmentations = T.RandomApply(augmentations, prob = 0.5)
 
 
