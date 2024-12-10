@@ -9,6 +9,10 @@ from detectron2.engine import DefaultTrainer, launch
 from detectron2.evaluation import COCOEvaluator
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from detectron2.data.datasets import register_coco_instances
+from detectron2.data import DatasetMapper, build_detection_train_loader
+from detectron2.data import transforms as T
+
+from augs import random_apply_augmentations
 
 from PIL import Image
 from PIL import ImageFile
@@ -36,7 +40,7 @@ NUM_GPUS = 1
 #label_map = {"dirt":0,"fake_lp_ioi":1,'real_lp_no_hsrp':2,'real_lp':2,'hsrp':3}
 
 class_list = ['dirt']
-exp_dir = './mahindra_dirt/exp2'
+exp_dir = './mahindra_dirt/exp3'
 
 
 
@@ -104,7 +108,7 @@ def setup():
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
-	cfg.MODEL.WEIGHTS = 'model_final_a3ec72.pkl'
+	cfg.MODEL.WEIGHTS = 'mahindra_dirt/exp2/model_0008099.pth'
 	#Let training initialize from pre-trained
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
@@ -115,13 +119,15 @@ def setup():
 	# cfg.INPUT.MAX_SIZE_TRAIN = 800    # default: [1333, ... ]
 	# cfg.INPUT.MIN_SIZE_TEST = 512
 	# cfg.INPUT.MAX_SIZE_TEST = 800
-	cfg.SOLVER.BASE_LR = 0.00125
-	cfg.SOLVER.CHECKPOINT_PERIOD = 2700 # =========================== 
+
+	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS=False #Keeping this FALSE includes images with empty annotations in training.
+	cfg.SOLVER.BASE_LR = 0.0000125 # divide 0.00125 by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
+	cfg.SOLVER.CHECKPOINT_PERIOD = #2000 # =========================== 
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 8 # =========================== 5 epochs
-	cfg.SOLVER.MAX_ITER = 54000 #===================================== 50 epochs=27000 iters with 16 Batch size
-	cfg.SOLVER.WARMUP_ITERS = 2700
-	cfg.TEST.EVAL_PERIOD = 2700 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
+	cfg.SOLVER.MAX_ITER = 1000 #16000 #===================================== 50 epochs=27000 iters with 16 Batch size. 16000 iters = ~15 epoch
+	cfg.SOLVER.WARMUP_ITERS = 50 #500
+	cfg.TEST.EVAL_PERIOD = #2000 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
 
 	cfg.OUTPUT_DIR = exp_dir #./mahindra_dirt/exp2
 
@@ -136,7 +142,20 @@ def main():
 	cfg = setup()
 	# print(cfg)
 	# exit()
-	trainer = Trainer(cfg)
+
+
+	# Custom trainer for adding augmentations
+	class AugTrainer(DefaultTrainer):
+		@classmethod
+		def build_train_loader(cls, cfg):
+			return build_detection_train_loader(
+				cfg,
+				mapper=DatasetMapper(cfg, is_train=True, augmentations=random_apply_augmentations)
+			)
+
+
+	#trainer = Trainer(cfg)
+	trainer = AugTrainer(cfg)
 	
 	# "True" to resume training from previous step else False for fresh training
 	trainer.resume_or_load(resume = True)
