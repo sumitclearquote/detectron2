@@ -150,7 +150,7 @@ def main():
 		def build_train_loader(cls, cfg):
 			return build_detection_train_loader(
 				cfg,
-				mapper=DatasetMapper(cfg, is_train=True, augmentations=random_apply_augmentations)
+				mapper=DatasetMapper(cfg, is_train=True, augmentations=[random_apply_augmentations])
 			)
 
 
