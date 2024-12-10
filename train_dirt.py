@@ -129,11 +129,11 @@ def setup():
 	# cfg.INPUT.MIN_SIZE_TEST = 512
 	# cfg.INPUT.MAX_SIZE_TEST = 800
 
-	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS=False #Keeping this FALSE includes images with empty annotations in training.
+	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS = True #Keeping this FALSE includes images with empty annotations in training.
 	cfg.SOLVER.BASE_LR = 0.0000125 # divide 0.00125(default) by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
 	cfg.SOLVER.CHECKPOINT_PERIOD = 500 #2000 # =========================== 
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
-	cfg.SOLVER.IMS_PER_BATCH = 1 # =========================== 5 epochs
+	cfg.SOLVER.IMS_PER_BATCH = 8 # =========================== 5 epochs
 	cfg.SOLVER.MAX_ITER = 1000 #16000 #===================================== 50 epochs=27000 iters with 16 Batch size. 16000 iters = ~15 epoch
 	cfg.SOLVER.WARMUP_ITERS = 50 #500
 	cfg.TEST.EVAL_PERIOD = 500 #2000 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
