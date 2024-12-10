@@ -1,5 +1,6 @@
 from detectron2.data import transforms as T
 
+from detectron2.data.transforms import AugmentationList
 
 from detectron2.data.transforms import Augmentation
 from detectron2.data.transforms.augmentation import Transform
@@ -36,6 +37,8 @@ augmentations = [
     T.RandomFlip(horizontal=True),
 ]
 
-random_apply_augmentations = T.RandomApply(augmentations, prob = 0.5)
+combined_augs = AugmentationList(augmentations)
+
+random_apply_augmentations = T.RandomApply(combined_augs, prob = 0.5)
 
 
