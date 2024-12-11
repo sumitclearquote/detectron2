@@ -118,7 +118,7 @@ def setup():
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
 	#cfg.MODEL.WEIGHTS = 'mahindra_dirt/exp2/model_0008099.pth'
-	cfg.MODEL_WEIGHTS = 'model_final_a3ec72.pkl'
+	cfg.MODEL.WEIGHTS = 'model_final_a3ec72.pkl'
 	#Let training initialize from pre-trained
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
