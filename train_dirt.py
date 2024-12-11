@@ -41,7 +41,7 @@ NUM_GPUS = 1
 #label_map = {"dirt":0,"fake_lp_ioi":1,'real_lp_no_hsrp':2,'real_lp':2,'hsrp':3}
 
 class_list = ['dirt']
-exp_dir = './mahindra_dirt/exp4'
+exp_dir = './mahindra_dirt/exp5'
 
 
 
@@ -117,8 +117,8 @@ def setup():
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
-	#cfg.MODEL.WEIGHTS = 'mahindra_dirt/exp2/model_0008099.pth'
-	cfg.MODEL.WEIGHTS = 'model_final_a3ec72.pkl'
+	cfg.MODEL.WEIGHTS = 'mahindra_dirt/exp4/model_final.pth'
+	#cfg.MODEL.WEIGHTS = 'model_final_a3ec72.pkl'
 	#Let training initialize from pre-trained
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
@@ -131,7 +131,7 @@ def setup():
 	# cfg.INPUT.MAX_SIZE_TEST = 800
 
 	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS = False #Keeping this FALSE includes images with empty annotations in training.
-	cfg.SOLVER.BASE_LR = 0.00025 # divide 0.00125(default) by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
+	cfg.SOLVER.BASE_LR = 2.512e-9 #0.00025 # divide 0.00125(default) by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
 	cfg.SOLVER.CHECKPOINT_PERIOD = 2000 # =========================== 
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 2 # =========================== 5 epochs
