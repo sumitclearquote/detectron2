@@ -54,3 +54,7 @@ _darcs
 
 # Extras
 **/**/.DS_Store
+
+# checkpoint dirs
+mahindra_dirt/exp2
+mahindra_dirt/exp3
