@@ -41,7 +41,7 @@ NUM_GPUS = 1
 #label_map = {"dirt":0,"fake_lp_ioi":1,'real_lp_no_hsrp':2,'real_lp':2,'hsrp':3}
 
 class_list = ['dirt']
-exp_dir = './mahindra_dirt/exp5'
+exp_dir = './mahindra_dirt/exp6'
 
 
 
@@ -131,13 +131,13 @@ def setup():
 	# cfg.INPUT.MAX_SIZE_TEST = 800
 
 	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS = False #Keeping this FALSE includes images with empty annotations in training.
-	cfg.SOLVER.BASE_LR = 2.512e-9 #0.00025 # divide 0.00125(default) by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
-	cfg.SOLVER.CHECKPOINT_PERIOD = 2000 # =========================== 
+	cfg.SOLVER.BASE_LR = 2.512e-10 #0.00025 # divide 0.00125(default) by 2 since bsize was / 2 and further divide it by 4 since we're starting from previous best model
+	cfg.SOLVER.CHECKPOINT_PERIOD = 1000 # =========================== 
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 2 # =========================== 5 epochs
 	cfg.SOLVER.MAX_ITER = 22000 #===================================== 50 epochs=27000 iters with 16 Batch size. 16000 iters = ~15 epoch
-	cfg.SOLVER.WARMUP_ITERS = 500
-	cfg.TEST.EVAL_PERIOD = 2000 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
+	cfg.SOLVER.WARMUP_ITERS = 200
+	cfg.TEST.EVAL_PERIOD = 1000 # =========================== same as 'cfg.SOLVER.CHECKPOINT_PERIOD'
 
 	cfg.OUTPUT_DIR = exp_dir #./mahindra_dirt/exp2
 
