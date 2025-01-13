@@ -20,7 +20,7 @@ from detectron2.data import DatasetCatalog, MetadataCatalog
 from PIL import Image
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-from shapely.geometry import Polygon
+#from shapely.geometry import Polygon
 
 # import PointRend project
 # from detectron2.projects import point_rend
