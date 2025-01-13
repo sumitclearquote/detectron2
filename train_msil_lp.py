@@ -36,6 +36,10 @@ from hooks import LossEvalHook
 from detectron2.data import DatasetMapper
 from detectron2.data import build_detection_test_loader
 
+# Where results will be stored
+exp_dir = "msil_training_dir/exp3"
+
+
 NUM_GPUS = 1
 # List of  Panels:
 train_classes = ['fake_lp' ,'real_lp_no_hsrp' ,	'real_lp' ,'hsrp' ,'fake_lp_ioi' ]
@@ -43,104 +47,15 @@ train_classes = ['fake_lp' ,'real_lp_no_hsrp' ,	'real_lp' ,'hsrp' ,'fake_lp_ioi'
 label_map = {"fake_lp":0,"fake_lp_ioi":1,'real_lp_no_hsrp':2,'real_lp':2,'hsrp':3}
 class_list = ['fake_lp','fake_lp_ioi','real_lp','hsrp']
 
-def countdown(t):
-    columns = shutil.get_terminal_size().columns
-    while t:
-        mins, secs = divmod(t, 60)
-        hrs, mins = divmod(mins,60)
-        timer = '{:02d}:{:02d}:{:02d}'.format(hrs,mins, secs)
-        print(f"Starting training in : {timer}".center(columns), end="\r")
-        time.sleep(1)
-        t -= 1
 
-def get_panels_dicts(img_dir):
+def get_dataset_dicts(img_dir):
 	if os.path.exists(os.path.join(img_dir,'preloaded_annotations.pkl')):
 		with open(os.path.join(img_dir,'preloaded_annotations.pkl'),'rb') as f:
 			dataset_dicts = pickle.load(f)
 		print("Pre Saved annotations loaded and returned")
 		return dataset_dicts
 	
-	dataset_dicts = []  # final list of dictionaries (one dict will have information of one image)
-	
-	# reading inside mutiple folders of on "train" and "val" folder
-	total_folders = len(os.listdir(img_dir))
-	for find, inside_folder in enumerate(os.listdir(img_dir)):
-		json_file = os.path.join(img_dir, inside_folder, "via_region_data.json")
-		
-		if not os.path.exists(json_file): 
-			continue
-		
-		with open(json_file) as f:
-			imgs_anns = json.load(f)
-			if type(imgs_anns) == str:
-				imgs_anns = eval(imgs_anns)  #if jsons are created from any code changes
 
-		for idx, v in enumerate(imgs_anns.values()):
-			record = {}
-			filename = os.path.join(img_dir, inside_folder, v["filename"])
-			filename = filename.replace('https://cq-workflow.s3.ap-south-1.amazonaws.com/', '')
-			filename = filename.replace('https://cq-workflow.s3.amazonaws.com','')
-			print("Folder: ",find+1,'/',total_folders,"Image: ",idx,'/',len(imgs_anns),' : ',filename)
-			
-			try:
-				cv_height, cv_width = cv2.imread(filename).shape[:2]
-			except Exception as e:
-				print("Image: ", filename, str(e))
-				continue
- 
-			pil_width, pil_height = Image.open(filename).size
-			if pil_width == cv_width and pil_height == cv_height:
-				record["file_name"] = filename
-				record["image_id"] = idx
-				record['height'] = cv_height
-				record['width'] = cv_width
-				annos = v["regions"]
-				objs = []
-
-				for anno in annos:
-					#Check if "region attributes" is present or not
-					if "region_attributes" in anno.keys():
-						cate = anno["region_attributes"]['identity']
-
-						if cate in train_classes:
-							#Check if "shape attributes" is present or not
-							if "shape_attributes" in anno.keys():
-								anno = anno["shape_attributes"]
-
-								if "all_points_x" in anno.keys() and "all_points_y" in anno.keys():
-									px = anno["all_points_x"]
-									py = anno["all_points_y"]
-
-									if len(px) == len(py):
-										poly = [(x + 0.5, y + 0.5) for x, y in zip(px, py)]
-										poly = [p for x in poly for p in x]
-
-										if len(poly) >= 6:
-											#Now checking if it can form a polygon or not
-											points = []
-											for i in range(0, len(px)):
-												points.append([px[i], py[i]])
-						
-											anno_poly = Polygon(points)
-											if anno_poly.is_valid:     #To check if this is a valid polygon
-												obj = {
-													"bbox": [np.min(px), np.min(py), np.max(px), np.max(py)],
-													"bbox_mode": BoxMode.XYXY_ABS,
-													"segmentation": [poly],
-													"category_id": label_map[cate],
-													"iscrowd": 0
-												}
-												objs.append(obj)
-
-				if objs != []:
-					record["annotations"] = objs
-					dataset_dicts.append(record)
-	
-	with open(os.path.join(img_dir, 'preloaded_annotations.pkl'), 'wb') as f:
-		pickle.dump(dataset_dicts,f)
-		print("annotations saved")
-
-	return dataset_dicts
 
 class Trainer(DefaultTrainer):
 	@classmethod
@@ -173,7 +88,7 @@ class Trainer(DefaultTrainer):
 # registering dataset for training process
 print("Dataset Registering....")
 for d in ["train", "val"]:
-	DatasetCatalog.register("msil_lp_" + d, lambda d=d: get_panels_dicts("msil_lp/" + d))
+	DatasetCatalog.register("msil_lp_" + d, lambda d=d: get_dataset_dicts("datasets/msil_lp/" + d))
 	MetadataCatalog.get("msil_lp_" + d).set(thing_classes=class_list)
 
 
@@ -187,7 +102,7 @@ def setup():
 
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
-	cfg.MODEL.WEIGHTS = 'msil_training_dir/exp1/model_final.pth'
+	cfg.MODEL.WEIGHTS = 'msil_training_dir/model_V_2.pth'
 	#Let training initialize from pre-trained
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(class_list)
@@ -205,7 +120,7 @@ def setup():
 	cfg.SOLVER.WARMUP_ITERS = 2000
 	cfg.TEST.EVAL_PERIOD = 20000
 
-	cfg.OUTPUT_DIR = './msil_training_dir/exp2'
+	cfg.OUTPUT_DIR = exp_dir #'./msil_training_dir/exp2'
 
 	os.makedirs(cfg.OUTPUT_DIR, exist_ok=True)
 	print(cfg, flush=True)
@@ -214,10 +129,8 @@ def setup():
 
 # Defining "trainer" object to start the training process
 def main():
-	# countdown(18000)
 	cfg = setup()
-	# print(cfg)
-	# exit()
+
 	trainer = Trainer(cfg)
 	
 	# "True" to resume training from previous step else False for fresh training
