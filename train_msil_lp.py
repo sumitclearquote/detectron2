@@ -37,7 +37,7 @@ from detectron2.data import DatasetMapper
 from detectron2.data import build_detection_test_loader
 
 # Where results will be stored
-exp_dir = "msil_training_dir/exp3"
+exp_dir = "msil_training_dir/exp4"
 
 
 NUM_GPUS = 1
@@ -102,7 +102,7 @@ def setup():
 
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
-	cfg.MODEL.WEIGHTS = 'msil_training_dir/model_V_2.pth'
+	cfg.MODEL.WEIGHTS = 'msil_training_dir/exp3/model_final.pth' #msil_training_dir/model_V_2.pth
 	#Let training initialize from pre-trained
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(class_list)
@@ -116,9 +116,9 @@ def setup():
 	cfg.SOLVER.CHECKPOINT_PERIOD = 20000
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 2
-	cfg.SOLVER.MAX_ITER = 200000
-	cfg.SOLVER.WARMUP_ITERS = 2000
-	cfg.TEST.EVAL_PERIOD = 20000
+	cfg.SOLVER.MAX_ITER = 100000
+	cfg.SOLVER.WARMUP_ITERS = 1000
+	cfg.TEST.EVAL_PERIOD = 10000
 
 	cfg.OUTPUT_DIR = exp_dir #'./msil_training_dir/exp2'
 
@@ -134,7 +134,7 @@ def main():
 	trainer = Trainer(cfg)
 	
 	# "True" to resume training from previous step else False for fresh training
-	trainer.resume_or_load(resume=False)
+	trainer.resume_or_load(resume=True)
 	print("Training Started...", flush=True)
 	trainer.train()
 
