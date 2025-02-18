@@ -129,10 +129,10 @@ def setup():
 	# cfg.INPUT.MAX_SIZE_TEST = 800
 
 	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS = True #Keeping this FALSE includes images with empty annotations in training.
-	cfg.SOLVER.BASE_LR = 0.0025  # considering default lr for bsize 16 is 0.02. 0.02/4 = 0.005
+	cfg.SOLVER.BASE_LR = 0.005  # considering default lr for bsize 16 is 0.02. 0.02/4 = 0.005
 	
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
-	cfg.SOLVER.IMS_PER_BATCH = 2 # =========================== batch size. Default for detectron2 is 16
+	cfg.SOLVER.IMS_PER_BATCH = 4 # =========================== batch size. Default for detectron2 is 16
 	cfg.SOLVER.MAX_ITER = 8500 #===================================== 30 epochs=8500 iters with 4 Batch size, 1095 images.
 	cfg.SOLVER.WARMUP_ITERS = 250
 	cfg.SOLVER.CHECKPOINT_PERIOD = 500 # =========================== ~every 2 epochs
