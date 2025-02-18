@@ -8,6 +8,7 @@ inference_test_output
 *.json
 *.diff
 *.jpg
+
 !/projects/DensePose/doc/images/*.jpg
 
 # compilation and distribution
@@ -60,3 +61,6 @@ mahindra_dirt/exp2
 mahindra_dirt/exp3
 mahindra_dirt/exp4
 mahindra_dirt/exp5
+
+# needed files
+!train_config.png
