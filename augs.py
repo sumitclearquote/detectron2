@@ -34,7 +34,7 @@ augmentations = [
     T.RandomBrightness(0.7, 1.3),
     T.RandomContrast(0.7, 1.3),
     ChannelShuffle(),  # Custom channel shuffle
-    T.RandomFlip(horizontal=True),
+    #T.RandomFlip(horizontal=True),
 ]
 
 combined_augs = AugmentationList(augmentations)
