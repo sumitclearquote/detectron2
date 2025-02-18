@@ -122,7 +122,7 @@ def setup():
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(class_list)
 	
-	#cfg.INPUT.RANDOM_FLIP = "none"
+	cfg.INPUT.RANDOM_FLIP = "none"
 	# cfg.INPUT.MIN_SIZE_TRAIN = (512,) # default: [800, 850  ... ]
 	# cfg.INPUT.MAX_SIZE_TRAIN = 800    # default: [1333, ... ]
 	# cfg.INPUT.MIN_SIZE_TEST = 512
