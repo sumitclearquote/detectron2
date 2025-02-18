@@ -59,7 +59,7 @@ def get_dataset_dicts(img_dir):
 class Trainer(DefaultTrainer):
 	@classmethod
 	def build_evaluator(cls, cfg, dataset_name, output_folder=None):
-		return COCOEvaluator("dirt_val", cfg, False, output_dir = exp_dir)
+		return COCOEvaluator("cargobike_val", cfg, False, output_dir = exp_dir)
 	
 	@classmethod
 	def build_lr_scheduler(cls,cfg,optimizer):
