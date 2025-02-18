@@ -44,7 +44,7 @@ class_list = ['batterybox', 'cabinroof', 'frontbumper', 'frontws', 'leftcabcorne
               'leftheadlamp', 'leftorvm', 'leftroofside', 'leftsidecrashguard', 'leftsidewall', 'rearroofside', 'rightcabcorner', 'rightfrontwa', 'rightheadlamp', 
               'rightorvm', 'rightroofside', 'rightsidecrashguard', 'rightsidewall', 'tailgate']
 
-exp_dir = './cargobikes/exp1'
+exp_dir = './cargobike_training_dir/exp1'
 
 # ================================================================================================================================================================
 
