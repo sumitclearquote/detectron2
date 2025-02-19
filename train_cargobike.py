@@ -39,12 +39,22 @@ from detectron2.data import build_detection_test_loader
 
 NUM_GPUS = 1
 
+# TRAINING PARAMETERS =========================================================
+# exp1: left and right panels were separately trained. max_iters=8500 (~30 epochs)
+# exp2: left and right panels were merged and trained. max_iters=8000
 # List of  Panels:
-class_list = ['batterybox', 'cabinroof', 'frontbumper', 'frontws', 'leftcabcorner', 'alloywheel', 'tyre', 'leftfrontwa', 
-              'leftheadlamp', 'leftorvm', 'leftroofside', 'leftsidecrashguard', 'leftsidewall', 'rearroofside', 'rightcabcorner', 'rightfrontwa', 'rightheadlamp', 
-              'rightorvm', 'rightroofside', 'rightsidecrashguard', 'rightsidewall', 'tailgate']
+# class_list = ['batterybox', 'cabinroof', 'frontbumper', 'frontws', 'leftcabcorner', 'alloywheel', 'tyre', 'leftfrontwa', 
+#               'leftheadlamp', 'leftorvm', 'leftroofside', 'leftsidecrashguard', 'leftsidewall', 'rearroofside', 'rightcabcorner', 'rightfrontwa', 'rightheadlamp', 
+#               'rightorvm', 'rightroofside', 'rightsidecrashguard', 'rightsidewall', 'tailgate'] # exp1 class_list (left and right separated)
+class_list =  ['tyre', 'alloywheel', 'batterybox','cabinroof','frontbumper','frontws', 'rearroofside', 'tailgate',
+              'cabcorner', 'frontwa', 'headlamp', 'orvm', 'roofside', 'crashguard', 'sidewall'] # exp2 class_list (left and right merged)
 
-exp_dir = './cargobike_training_dir/exp1'
+exp_name = "exp2"
+exp_dir = f'./cargobike_training_dir/{exp_name}'
+
+dataset_path = "datasets/cargo_bike_training_data"
+data_name = "cargobike"
+
 
 # ================================================================================================================================================================
 
@@ -59,7 +69,7 @@ def get_dataset_dicts(img_dir):
 class Trainer(DefaultTrainer):
 	@classmethod
 	def build_evaluator(cls, cfg, dataset_name, output_folder=None):
-		return COCOEvaluator("cargobike_val", cfg, False, output_dir = exp_dir)
+		return COCOEvaluator(f"{data_name}_val", cfg, False, output_dir = exp_dir)
 	
 	@classmethod
 	def build_lr_scheduler(cls,cfg,optimizer):
@@ -97,8 +107,8 @@ print("Dataset Registering....")
 
 
 for d in ["val", "train"]:
-    DatasetCatalog.register("cargobike_" + d, lambda d=d:get_dataset_dicts(f"datasets/cargo_bike_training_data/{d}"))
-    metadata = MetadataCatalog.get("cargobike_" + d).set(thing_classes=class_list)
+    DatasetCatalog.register(f"{data_name}_" + d, lambda d=d:get_dataset_dicts(f"{dataset_path}/{d}"))
+    metadata = MetadataCatalog.get(f"{data_name}_" + d).set(thing_classes=class_list)
 
 
 
@@ -107,8 +117,8 @@ def setup():
 	torch.cuda.empty_cache()
 	cfg = get_cfg()
 	cfg.merge_from_file("configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml") # ======== architecture?
-	cfg.DATASETS.TRAIN = ("cargobike_train",)
-	cfg.DATASETS.TEST = ("cargobike_val",)
+	cfg.DATASETS.TRAIN = (f"{data_name}_train",)
+	cfg.DATASETS.TEST = (f"{data_name}_val",)
 	cfg.DATALOADER.NUM_WORKERS = 2
 
 	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
@@ -133,7 +143,7 @@ def setup():
 	
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 4 # =========================== batch size. Default for detectron2 is 16
-	cfg.SOLVER.MAX_ITER = 8500 #===================================== 30 epochs=8500 iters with 4 Batch size, 1095 images.
+	cfg.SOLVER.MAX_ITER = 8000 #===================================== 30 epochs=8500 iters with 4 Batch size, 1095 images.
 	cfg.SOLVER.WARMUP_ITERS = 250
 	cfg.SOLVER.CHECKPOINT_PERIOD = 500 # =========================== ~every 2 epochs
 	cfg.TEST.EVAL_PERIOD = 500 # =========================== can keep same as 'cfg.SOLVER.CHECKPOINT_PERIOD'.
