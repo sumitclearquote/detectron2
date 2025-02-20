@@ -151,7 +151,7 @@ def setup():
 	
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 4 # =========================== batch size. Default for detectron2 is 16
-	cfg.SOLVER.MAX_ITER = 5500 #8000 #===================================== 15 epochs for exp3. 30 epochs=8500 iters with 4 Batch size, 1095 images.
+	cfg.SOLVER.MAX_ITER = 8000 #===================================== 15 epochs for exp3. 30 epochs=8500 iters with 4 Batch size, 1095 images.
 	cfg.SOLVER.WARMUP_ITERS = 250
 	cfg.SOLVER.CHECKPOINT_PERIOD = 500 # =========================== ~every 2 epochs
 	cfg.TEST.EVAL_PERIOD = 500 # =========================== can keep same as 'cfg.SOLVER.CHECKPOINT_PERIOD'.
