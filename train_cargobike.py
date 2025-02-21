@@ -125,8 +125,7 @@ def setup():
 	cfg.DATASETS.TEST = (f"{data_name}_val",)
 	cfg.DATALOADER.NUM_WORKERS = 2
 
-	#cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
-	cfg.MODEL.ANCHOR_GENERATOR_SIZES = [[8, 16, 32, 64, 128, 256, 512]] # for headlamps.
+	cfg.MODEL.ANCHOR_GENERATOR.SIZES = [[8, 16, 32, 64, 128, 256, 512]]
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
 
