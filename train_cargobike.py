@@ -53,7 +53,7 @@ class_list = ['batterybox', 'cabinroof', 'frontbumper', 'frontws', 'leftcabcorne
 # class_list =  ['tyre', 'alloywheel', 'batterybox','cabinroof','frontbumper','frontws', 'rearroofside', 'tailgate',
 #               'cabcorner', 'frontwa', 'headlamp', 'orvm', 'roofside', 'crashguard', 'sidewall'] # exp2 class_list (left and right merged)
 
-exp_name = "exp5_trial"
+exp_name = "exp5"
 exp_dir = f'./cargobike_training_dir/{exp_name}'
 
 dataset_path = "datasets/cargo_bike_training_data"
@@ -134,7 +134,7 @@ def setup():
 	#Let training initialize from pre-trained
 
 	#Double the mask loss weight
-	#cfg.MODEL.ROI_MASK_HEAD.LOSS_WEIGHT = 2.0
+	cfg.MODEL.ROI_MASK_HEAD.LOSS_WEIGHT = 2.0
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(class_list)
@@ -146,11 +146,11 @@ def setup():
 	# cfg.INPUT.MAX_SIZE_TEST = 800
 
 	cfg.DATALOADER.FILTER_EMPTY_ANNOTATIONS = True #Keeping this FALSE includes images with empty annotations in training.
-	cfg.SOLVER.BASE_LR = 0.00008 #0.004 #=0.0002  #0.000275, 0.005  # considering default lr for bsize 16 is 0.02. 0.02/4 = 0.005. 0.0015/4
+	cfg.SOLVER.BASE_LR = 0.004 #0.004 #=0.0002  #0.000275, 0.005  # considering default lr for bsize 16 is 0.02. 0.02/4 = 0.005. 0.0015/4
 	
 	cfg.SOLVER.LR_SCHEDULER_NAME = 'Cosine'
 	cfg.SOLVER.IMS_PER_BATCH = 4 # =========================== batch size. Default for detectron2 is 16
-	cfg.SOLVER.MAX_ITER = 8000 #===================================== 15 epochs for exp3. 30 epochs=8500 iters with 4 Batch size, 1095 images.
+	cfg.SOLVER.MAX_ITER = 9000 #===================================== 15 epochs for exp3. 30 epochs=8500 iters with 4 Batch size, 1095 images.
 	cfg.SOLVER.WARMUP_ITERS = 250
 	cfg.SOLVER.CHECKPOINT_PERIOD = 500 # =========================== ~every 2 epochs
 	cfg.TEST.EVAL_PERIOD = 500 # =========================== can keep same as 'cfg.SOLVER.CHECKPOINT_PERIOD'.
