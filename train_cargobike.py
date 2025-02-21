@@ -135,7 +135,7 @@ def setup():
 	#Let training initialize from pre-trained
 
 	#Double the mask loss weight
-	#cfg.MODEL.ROI_MASK_HEAD.LOSS_WEIGHT = 2.0
+	cfg.MODEL.ROI_MASK_HEAD.LOSS_WEIGHT = 2.0
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(class_list)
