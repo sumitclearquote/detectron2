@@ -53,7 +53,7 @@ class_list = ['batterybox', 'cabinroof', 'frontbumper', 'frontws', 'leftcabcorne
 # class_list =  ['tyre', 'alloywheel', 'batterybox','cabinroof','frontbumper','frontws', 'rearroofside', 'tailgate',
 #               'cabcorner', 'frontwa', 'headlamp', 'orvm', 'roofside', 'crashguard', 'sidewall'] # exp2 class_list (left and right merged)
 
-exp_name = "exp4"
+exp_name = "exp5_trial"
 exp_dir = f'./cargobike_training_dir/{exp_name}'
 
 dataset_path = "datasets/cargo_bike_training_data"
@@ -135,7 +135,7 @@ def setup():
 	#Let training initialize from pre-trained
 
 	#Double the mask loss weight
-	cfg.MODEL.ROI_MASK_HEAD.LOSS_WEIGHT = 2.0
+	#cfg.MODEL.ROI_MASK_HEAD.LOSS_WEIGHT = 2.0
 	
 	cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 1024
 	cfg.MODEL.ROI_HEADS.NUM_CLASSES = len(class_list)
