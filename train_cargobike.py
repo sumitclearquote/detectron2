@@ -130,7 +130,7 @@ def setup():
 	cfg.MODEL.ANCHOR_GENERATOR.ASPECT_RATIOS = [[0.5, 1.0, 1.33, 1.5, 2.0]]
 	
 
-	cfg.MODEL.WEIGHTS = 'cargobike_training_dir/exp3/model_final.pth'
+	cfg.MODEL.WEIGHTS = 'cargobike_training_dir/exp1/model_final.pth'
 	#cfg.MODEL.WEIGHTS = 'model_final_a3ec72.pkl'
 	#Let training initialize from pre-trained
 
